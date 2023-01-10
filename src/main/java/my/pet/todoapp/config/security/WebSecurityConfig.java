@@ -24,14 +24,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .authorizeHttpRequests()
-                .requestMatchers( "/signup", "/signin")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                .authorizeHttpRequests(reg -> reg.antMatchers("/signup", "/signin")
+                    .permitAll().anyRequest().authenticated())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -45,7 +40,12 @@ public class WebSecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web
                 .ignoring()
-                .requestMatchers("/swagger-ui/**", "/swagger-ui.html");
+                .antMatchers("/swagger-ui/**", "/v2/api-docs",
+                    "/configuration/ui",
+                    "/swagger-resources/**",
+                    "/configuration/security",
+                    "/swagger-ui.html",
+                    "/webjars/**");
     }
 
 }

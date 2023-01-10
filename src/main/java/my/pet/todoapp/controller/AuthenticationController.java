@@ -1,6 +1,7 @@
 package my.pet.todoapp.controller;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 import my.pet.todoapp.payload.RegisterRequest;
 import org.springframework.http.ResponseEntity;
