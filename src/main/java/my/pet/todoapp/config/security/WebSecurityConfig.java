@@ -24,6 +24,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .authorizeHttpRequests(reg -> reg.antMatchers("/signup", "/signin")
                     .permitAll().anyRequest().authenticated())
@@ -49,3 +50,4 @@ public class WebSecurityConfig {
     }
 
 }
+

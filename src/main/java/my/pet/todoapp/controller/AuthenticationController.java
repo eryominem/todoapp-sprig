@@ -7,7 +7,6 @@ import my.pet.todoapp.payload.RegisterRequest;
 import org.springframework.http.ResponseEntity;
 import my.pet.todoapp.service.AuthenticationService;
 import my.pet.todoapp.payload.AuthenticationRequest;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,12 +23,8 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> register(@Valid @RequestBody AuthenticationRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest request) {
         return authenticationService.login(request);
     }
 
-    @GetMapping("/demo")
-    public String demo() {
-        return "demo cont is work";
-    }
 }

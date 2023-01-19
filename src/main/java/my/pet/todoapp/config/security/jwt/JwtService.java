@@ -29,6 +29,7 @@ public class JwtService {
     private int jwtExpirationMs;
 
     public String extractUsername(String token) {
+        System.out.println(extractClaim(token, Claims::getSubject));
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -50,6 +51,7 @@ public class JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .claim("roles", userPrincipal.getRole())
                 .compact();
     }
 
@@ -93,7 +95,6 @@ public class JwtService {
 
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        //System.out.println(Keys.hmacShaKeyFor(keyBytes));
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
