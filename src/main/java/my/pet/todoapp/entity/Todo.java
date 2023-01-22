@@ -1,5 +1,6 @@
 package my.pet.todoapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -31,6 +32,7 @@ public class Todo {
     @UpdateTimestamp
     private LocalDateTime createdTime = LocalDateTime.now();
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

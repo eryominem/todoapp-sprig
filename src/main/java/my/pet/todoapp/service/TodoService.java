@@ -37,6 +37,11 @@ public class TodoService {
         return todo;
     }*/
 
+    public List<Todo> getTodoList() {
+        User user = getCurrentUser();
+        return todoRepository.findByUserId(user.getId());
+    }
+
     public Todo addTodo(AddTodoRequest addTodoRequest) {
         Todo todo = new Todo();
         todo.setTittle(addTodoRequest.getTittle());

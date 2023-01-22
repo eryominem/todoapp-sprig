@@ -22,16 +22,23 @@ import java.util.List;
 public class TodoController {
     private TodoService todoService;
 
+
+    /**
+     *         ДОДЕЛАТЬ:
+     * получение конкретной задачи
+     *     удаление задачи
+     *
+     */
     @Autowired
     public TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
 
-    /*@GetMapping
+    @GetMapping
     public ResponseEntity<?> getTodos() {
         List<Todo> todos = todoService.getTodoList();
         return new ResponseEntity<>(todos, HttpStatus.OK);
-    }*/
+    }
 
     @PostMapping
     public ResponseEntity<?> createTodo(@Valid @RequestBody AddTodoRequest addTodoRequest) {
