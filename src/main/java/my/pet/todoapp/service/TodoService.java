@@ -21,25 +21,21 @@ public class TodoService {
         this.todoRepository = todoRepository;
     }
 
-   /* public List<Todo> getTodoList() {
-        List<Todo> todos = todoRepository.findAll();
-        if (todos == null) {
-            throw new TodoNotFoundException("Todo list is empty!");
-        }
-        return todos;
-    }
-
-    public Todo getTodoById(Long id) {
-        Todo todo = todoRepository.getById(id);
+    public Todo getTodo(Long id) {
+        Todo todo = todoRepository.findById(id).get();
         if (todo == null) {
             throw new TodoNotFoundException("Todo not found!");
         }
         return todo;
-    }*/
+    }
 
     public List<Todo> getTodoList() {
         User user = getCurrentUser();
-        return todoRepository.findByUserId(user.getId());
+        List<Todo> todos = todoRepository.findByUserId(user.getId());
+        if (todos == null) {
+            throw new TodoNotFoundException("Todo list is empty!");
+        }
+        return todos;
     }
 
     public Todo addTodo(AddTodoRequest addTodoRequest) {
@@ -54,13 +50,12 @@ public class TodoService {
         return todo;
     }
 
-    /*public void deleteById(Long id) {
-        Todo todo = todoRepository.getById(id);
-        if (todo == null) {
-            throw new TodoNotFoundException("Todo not found!");
-        }
+    public Todo deleteTodo(Long id) {
+        Todo todo = getTodo(id);
         todoRepository.deleteById(id);
-    }*/
+        return todo;
+    }
+
 
     public User getCurrentUser() {
         return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
