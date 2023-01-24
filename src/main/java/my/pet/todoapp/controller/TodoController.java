@@ -22,11 +22,11 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    /*@GetMapping
+    @GetMapping
     public ResponseEntity<?> getTodos() {
         List<Todo> todos = todoService.getTodoList();
         return new ResponseEntity<>(todos, HttpStatus.OK);
-    }*/
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getTodoById(@PathVariable(value = "id") Long id) {
