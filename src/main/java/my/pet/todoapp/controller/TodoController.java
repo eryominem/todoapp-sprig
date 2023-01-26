@@ -4,15 +4,15 @@ import my.pet.todoapp.entity.Todo;
 import my.pet.todoapp.service.TodoService;
 import org.springframework.http.HttpStatus;
 import my.pet.todoapp.payload.AddTodoRequest;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.Valid;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/todos")
 public class TodoController {
     private TodoService todoService;
@@ -23,27 +23,23 @@ public class TodoController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getTodos() {
-        List<Todo> todos = todoService.getTodoList();
-        return new ResponseEntity<>(todos, HttpStatus.OK);
+    public List<Todo> getTodos() {
+        return todoService.getTodoList();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getTodoById(@PathVariable(value = "id") Long id) {
-        Todo todo = todoService.getTodo(id);
-        return new ResponseEntity<>(todo, HttpStatus.OK);
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Todo getTodoById(@PathVariable(value = "id") Long id) {
+        return todoService.getTodo(id);
     }
 
     @PostMapping
-    public ResponseEntity<?> createTodo(@Valid @RequestBody AddTodoRequest addTodoRequest) {
-        Todo todo = todoService.addTodo(addTodoRequest);
-        return new ResponseEntity<>(todo, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Todo createTodo(@Valid @RequestBody AddTodoRequest addTodoRequest) {
+        return todoService.addTodo(addTodoRequest);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTodoById(@PathVariable("id") Long id) {
-        Todo todo = todoService.deleteTodo(id);
-        return new ResponseEntity<>(todo, HttpStatus.OK);
+    public Todo deleteTodoById(@PathVariable("id") Long id) {
+        return todoService.deleteTodo(id);
     }
-
 }
