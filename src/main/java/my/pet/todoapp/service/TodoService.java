@@ -1,13 +1,14 @@
 package my.pet.todoapp.service;
 
-import my.pet.todoapp.entity.User;
 import my.pet.todoapp.entity.Todo;
-import my.pet.todoapp.exception.TodoNotFoundException;
+import my.pet.todoapp.entity.User;
+import my.pet.todoapp.exception.TodoNotAvailableException;
 import my.pet.todoapp.payload.AddTodoRequest;
+import org.springframework.stereotype.Service;
 import my.pet.todoapp.repository.TodoRepository;
+import my.pet.todoapp.exception.TodoNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,10 +23,14 @@ public class TodoService {
     }
 
     public Todo getTodo(Long id) {
-        Todo todo = todoRepository.findById(id).get();
-        if (todo == null) {
-            throw new TodoNotFoundException("Todo not found!");
+        Todo todo = todoRepository.findById(id).orElseThrow(
+                () -> new TodoNotFoundException("Todo with id " + id + " not found.")
+        );
+
+        if (todo.getUser().getId() != getCurrentUser().getId()) {
+            throw new TodoNotAvailableException("This resource is not a resource for the current user.");
         }
+
         return todo;
     }
 

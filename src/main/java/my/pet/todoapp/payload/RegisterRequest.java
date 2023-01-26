@@ -20,7 +20,7 @@ public class RegisterRequest {
     private String email;
 
     @NotNull
-    @Pattern(regexp = "^[a-z0-9_-]*$")
+    @Pattern(regexp = "^[A-Za-z0-9_-]*$")
     @Size(min = 3, max = 30)
     private String username;
 

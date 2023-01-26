@@ -3,10 +3,9 @@ package my.pet.todoapp.service;
 import my.pet.todoapp.entity.User;
 import my.pet.todoapp.entity.Role;
 import lombok.RequiredArgsConstructor;
-import my.pet.todoapp.payload.ErrorResponse;
+import my.pet.todoapp.exception.AppError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import my.pet.todoapp.payload.RegisterRequest;
 import my.pet.todoapp.repository.UserRepository;
@@ -32,13 +31,13 @@ public class AuthenticationService {
         if (userRepository.existsByUsername(request.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ErrorResponse("Error: Username is exist"));
+                    .body(new AppError("Error: Username is exist"));
         }
 
         if (userRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new ErrorResponse("Error: Email is exist"));
+                    .body(new AppError("Error: Email is exist"));
         }
 
         var user = User.builder()       //@Builder - позволяет вам автоматически создавать код, необходимый для
