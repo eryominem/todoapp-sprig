@@ -1,5 +1,7 @@
 package my.pet.todoapp.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import my.pet.todoapp.entity.User;
 import my.pet.todoapp.entity.Role;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,8 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+
     //регистрация
     public ResponseEntity<?> register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -51,6 +55,7 @@ public class AuthenticationService {
         userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
 
+        logger.info("User \"{}\" has been created", user.getUsername());
         return new ResponseEntity(AuthenticationResponse
                 .builder()
                 .token(jwtToken)
@@ -69,6 +74,7 @@ public class AuthenticationService {
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
 
+        logger.info("User \"{}\" has been authorized", user.getUsername());
         return ResponseEntity.ok(AuthenticationResponse
                 .builder()
                 .token(jwtToken)
